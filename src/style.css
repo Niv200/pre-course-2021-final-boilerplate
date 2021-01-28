@@ -2,3 +2,23 @@
   display: flex;
   flex-direction: column;
 }
+
+.very-low {
+  background-color: lightgray;
+}
+
+.low {
+  background-color: gray;
+}
+
+.normal {
+  background-color: white;
+}
+
+.high {
+  background-color: rgb(219, 125, 125);
+}
+
+.very-high {
+  background-color: tomato;
+}
