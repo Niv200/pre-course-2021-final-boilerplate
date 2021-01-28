@@ -2,44 +2,33 @@ totalItemsCount = 0;
 todoItemsCount = 0;
 doneItemsCount = 0;
 let tasks = [];
-
+let tasksLeft = 0;
+let tasksCompleted = 0;
+let counterHeader = document.getElementById("tasks-left");
+let completedHeader = document.getElementById("completed-tasks");
+let resetButton = document.getElementById("reset");
 let button = document.getElementById("add-button");
+
+resetButton.addEventListener("click", (e) => {
+  resetTotalDone();
+});
+
 button.addEventListener("click", (e) => {
   let task = document.getElementsByTagName("input")[0].value;
   let taskDiv = document.getElementById("tasks-container");
   let label = document.createElement("label");
   let priorityInput = document.getElementById("priority-selector").value;
-  addToTasks(taskDiv, label, task, new Date(), priorityInput);
+  if (addToTasks(taskDiv, label, task, new Date(), priorityInput)) {
+    changeTotalLeft(true);
+  }
 });
-
-function taskChecked(event) {
-  let div = event.target.parentNode;
-  let taskDiv = document.getElementById("tasks-container");
-  let taskDoneDiv = document.getElementById("tasks-done-container");
-
-  if (!event.target.checked) {
-    taskDiv.appendChild(div);
-    taskDoneDiv.removeChild(div);
-    todoItemsCount++;
-    doneItemsCount--;
-  } else {
-    taskDiv.removeChild(div);
-    taskDoneDiv.appendChild(div);
-    todoItemsCount--;
-    doneItemsCount++;
-  }
-  if (todoItemsCount >= 1) {
-    document.getElementById("empty-list-span").style.display = "none";
-  } else if (todoItemsCount === 0) {
-    document.getElementById("empty-list-span").style.display = "block";
-  }
-}
 
 //My functions.
 function removeTask(div, label, input, removeButton) {
   div.removeChild(input);
   div.removeChild(label);
   div.removeChild(removeButton);
+  changeTotalLeft(false);
 }
 
 function getTaskAsObject(text, priority, date) {
@@ -55,7 +44,6 @@ function resetInputs() {
   document.getElementsByTagName("select")[0].value = "";
 }
 
-///
 function calculateTime(time) {
   let year = time.getFullYear();
   let month = time.getMonth();
@@ -93,12 +81,47 @@ function findPriority(priority) {
   return priorityClassName;
 }
 
+//flag = add 1
+//!flag = remove 1
+function changeTotalLeft(flag) {
+  let text = counterHeader.innerText;
+  if (flag) {
+    text = text.replace(tasksLeft, tasksLeft + 1);
+    tasksLeft = tasksLeft + 1;
+  } else {
+    text = text.replace(tasksLeft, tasksLeft - 1);
+    tasksLeft = tasksLeft - 1;
+  }
+  counterHeader.innerText = text;
+}
+
+//flag = add 1
+//!flag = remove 1
+function changeTotalDone(flag) {
+  let text = completedHeader.innerText;
+  if (flag) {
+    text = text.replace(tasksCompleted, tasksCompleted + 1);
+    tasksCompleted = tasksCompleted + 1;
+  } else {
+    tasksCompleted = text.replace(tasksCompleted, tasksCompleted - 1);
+    tasksCompleted = tasksCompleted - 1;
+  }
+  completedHeader.innerText = text;
+}
+
+function resetTotalDone() {
+  let text = completedHeader.innerText;
+  text = text.replace(tasksCompleted, 0);
+  tasksCompleted = 0;
+  completedHeader.innerText = text;
+}
+
 function addToTasks(taskDiv, label, text, date, priority) {
+  let bool = false;
   let task = text;
   let input = document.createElement("input");
   input.type = "checkbox";
   input.id = "item" + totalItemsCount;
-  input.onclick = taskChecked;
   label.setAttribute("for", input.id);
   if (task.length <= 1) {
     alert("You need to add a task!");
@@ -116,24 +139,25 @@ function addToTasks(taskDiv, label, text, date, priority) {
       let removeButton = document.createElement("button");
       removeButton.className = "remove-button";
       removeButton.innerText = "remove";
-      //removeButton.onclick = taskChecked;
       div.appendChild(input);
       div.appendChild(label);
       div.appendChild(removeButton);
       taskDiv.appendChild(div);
       totalItemsCount++;
       todoItemsCount++;
+      bool = true;
       removeButton.addEventListener("click", (e) => {
         removeTask(div, label, input, removeButton);
+        changeTotalDone(true);
       });
       if (todoItemsCount === 1) {
         document.getElementById("empty-list-span").style.display = "none";
       }
-      //console.log(getTaskAsObject(task, priorityInput, new Date()));
     } else {
       //If importance number is NOT chosen.
       alert("You need to choose importance level!");
     }
+    return bool;
   }
   return task;
 }

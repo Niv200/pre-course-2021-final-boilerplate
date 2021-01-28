@@ -26,16 +26,14 @@
         <option value="5">5</option>
       </select>
       <button id="add-button">Add</button>
-      <!-- onclick="addTask()"-->
     </form>
-    <h3>Tasks left :</h3>
+    <h3 id="tasks-left">Tasks left : 0</h3>
     <div id="tasks-container" class="tasks">
       <span id="empty-list-span">Your task list is empty :)</span>
     </div>
-    <h3>Completed tasks :</h3>
-    <div id="tasks-done-container" class="tasks">
-      <span id="empty-list-done-span">You didn't finish any task today :(</span>
-    </div>
+    <button id="reset">reset</button>
+    <!-- <input id="reset" type = "checkbox">reset</input> -->
+    <h3 id="completed-tasks">Completed tasks : 0</h3>
     <script src="main.js"></script>
   </body>
 </html>
