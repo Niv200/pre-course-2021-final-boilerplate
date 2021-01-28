@@ -25,10 +25,12 @@ button.addEventListener("click", (e) => {
 
 //My functions.
 function removeTask(div, label, input, removeButton) {
+  if (!input.checked) {
+    changeTotalLeft(false);
+  }
   div.removeChild(input);
   div.removeChild(label);
   div.removeChild(removeButton);
-  changeTotalLeft(false);
 }
 
 function getTaskAsObject(text, priority, date) {
@@ -95,6 +97,18 @@ function changeTotalLeft(flag) {
   counterHeader.innerText = text;
 }
 
+function changeNumbers(obj, label) {
+  if (obj.checked) {
+    changeTotalLeft(false);
+    label.classList.add("ticked");
+    changeTotalDone(true);
+  } else {
+    changeTotalLeft(true);
+    label.classList.remove("ticked");
+    changeTotalDone(false);
+  }
+}
+
 //flag = add 1
 //!flag = remove 1
 function changeTotalDone(flag) {
@@ -103,7 +117,7 @@ function changeTotalDone(flag) {
     text = text.replace(tasksCompleted, tasksCompleted + 1);
     tasksCompleted = tasksCompleted + 1;
   } else {
-    tasksCompleted = text.replace(tasksCompleted, tasksCompleted - 1);
+    text = text.replace(tasksCompleted, tasksCompleted - 1);
     tasksCompleted = tasksCompleted - 1;
   }
   completedHeader.innerText = text;
@@ -122,6 +136,9 @@ function addToTasks(taskDiv, label, text, date, priority) {
   let input = document.createElement("input");
   input.type = "checkbox";
   input.id = "item" + totalItemsCount;
+  input.addEventListener("click", (e) => {
+    changeNumbers(e.target, label);
+  });
   label.setAttribute("for", input.id);
   if (task.length <= 1) {
     alert("You need to add a task!");
@@ -139,6 +156,7 @@ function addToTasks(taskDiv, label, text, date, priority) {
       let removeButton = document.createElement("button");
       removeButton.className = "remove-button";
       removeButton.innerText = "remove";
+      //Deactivation button for tasks
       div.appendChild(input);
       div.appendChild(label);
       div.appendChild(removeButton);
@@ -148,7 +166,9 @@ function addToTasks(taskDiv, label, text, date, priority) {
       bool = true;
       removeButton.addEventListener("click", (e) => {
         removeTask(div, label, input, removeButton);
-        changeTotalDone(true);
+        if (!input.checked) {
+          changeTotalDone(true);
+        }
       });
       if (todoItemsCount === 1) {
         document.getElementById("empty-list-span").style.display = "none";

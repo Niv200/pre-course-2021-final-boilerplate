@@ -22,3 +22,10 @@
 .very-high {
   background-color: tomato;
 }
+
+.ticked {
+  color: rgb(9, 59, 59);
+  text-decoration: line-through;
+  background-color: teal;
+  font-style: italic;
+}
