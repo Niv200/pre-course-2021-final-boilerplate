@@ -1,3 +1,8 @@
+* {
+  text-align: center;
+  /* background-image: url("background.jpg"); */
+}
+
 .tasks {
   display: flex;
   flex-direction: column;

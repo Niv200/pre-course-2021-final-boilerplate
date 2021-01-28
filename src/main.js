@@ -1,7 +1,5 @@
-totalItemsCount = 0;
-todoItemsCount = 0;
-doneItemsCount = 0;
 let tasks = [];
+let tickedTasks = [];
 let tasksLeft = 0;
 let tasksCompleted = 0;
 let counterHeader = document.getElementById("tasks-left");
@@ -11,6 +9,17 @@ let button = document.getElementById("add-button");
 
 resetButton.addEventListener("click", (e) => {
   resetTotalDone();
+  //   for(task of tickedTasks){
+  //       let div = document.createElement("div");
+  //       div.removeChild(input);
+  //       div.removeChild(label);
+  //       div.removeChild(removeButton);
+  //   }
+  let tickedTasks = document.querySelectorAll(".ticked");
+  console.log(tickedTasks);
+  for (i = 0; i < tickedTasks.length; i++) {
+    tickedTasks[i].closest("div").remove();
+  }
 });
 
 button.addEventListener("click", (e) => {
@@ -18,21 +27,19 @@ button.addEventListener("click", (e) => {
   let taskDiv = document.getElementById("tasks-container");
   let label = document.createElement("label");
   let priorityInput = document.getElementById("priority-selector").value;
-  if (addToTasks(taskDiv, label, task, new Date(), priorityInput)) {
-    changeTotalLeft(true);
-  }
+  addToTasks(taskDiv, label, task, new Date(), priorityInput);
 });
 
 //My functions.
-function removeTask(div, label, input, removeButton) {
-  if (!input.checked) {
-    changeTotalLeft(false);
+function removeTask(div, label, removeButton) {
+  if (!containsTicked(label)) {
+    // changeTotalLeft(false);
   }
-  div.removeChild(input);
   div.removeChild(label);
   div.removeChild(removeButton);
 }
 
+//Function to return a task object.
 function getTaskAsObject(text, priority, date) {
   return {
     text: text,
@@ -41,11 +48,13 @@ function getTaskAsObject(text, priority, date) {
   };
 }
 
+//Function to reset all inputs after the user hits "add".
 function resetInputs() {
   document.getElementsByTagName("input")[0].value = "";
   document.getElementsByTagName("select")[0].value = "";
 }
 
+//Function to get the time into a readable format without seconds and miliseconds.
 function calculateTime(time) {
   let year = time.getFullYear();
   let month = time.getMonth();
@@ -53,14 +62,19 @@ function calculateTime(time) {
   let day = time.getDate();
   let hours = time.getHours();
   let minutes = time.getMinutes();
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
   let string = day + "/" + month + "/" + year + " " + hours + ":" + minutes;
   return string;
 }
 
+//Function to return text, date, and priority as a single string.
 function getTaskText(text, date, priority) {
   return " " + priority + " " + text + " " + calculateTime(date) + " ";
 }
 
+//A function to return a color respectively to priority value (1 to 5).
 function findPriority(priority) {
   let priorityClassName = "";
   switch (JSON.parse(priority)) {
@@ -83,8 +97,7 @@ function findPriority(priority) {
   return priorityClassName;
 }
 
-//flag = add 1
-//!flag = remove 1
+//function to change the total tasks left counter, if flag then add 1, if !flag subtract 1.
 function changeTotalLeft(flag) {
   let text = counterHeader.innerText;
   if (flag) {
@@ -97,20 +110,28 @@ function changeTotalLeft(flag) {
   counterHeader.innerText = text;
 }
 
-function changeNumbers(obj, label) {
-  if (obj.checked) {
-    changeTotalLeft(false);
-    label.classList.add("ticked");
-    changeTotalDone(true);
-  } else {
+//function to change the numbers of both counters once a task has been ticked.
+function changeNumbers(label) {
+  if (containsTicked(label)) {
     changeTotalLeft(true);
     label.classList.remove("ticked");
     changeTotalDone(false);
+  } else {
+    changeTotalLeft(false);
+    label.classList.add("ticked");
+    changeTotalDone(true);
   }
 }
 
-//flag = add 1
-//!flag = remove 1
+function containsTicked(label) {
+  for (className of label.classList) {
+    if (className === "ticked") {
+      return true;
+    }
+  }
+  return false;
+}
+//function to change the total tasks done counter, if flag then add 1, if !flag subtract 1.
 function changeTotalDone(flag) {
   let text = completedHeader.innerText;
   if (flag) {
@@ -123,6 +144,7 @@ function changeTotalDone(flag) {
   completedHeader.innerText = text;
 }
 
+//A function to reset the total done counter
 function resetTotalDone() {
   let text = completedHeader.innerText;
   text = text.replace(tasksCompleted, 0);
@@ -133,13 +155,13 @@ function resetTotalDone() {
 function addToTasks(taskDiv, label, text, date, priority) {
   let bool = false;
   let task = text;
-  let input = document.createElement("input");
-  input.type = "checkbox";
-  input.id = "item" + totalItemsCount;
-  input.addEventListener("click", (e) => {
-    changeNumbers(e.target, label);
-  });
-  label.setAttribute("for", input.id);
+  //   let input = document.createElement("input");
+  //   input.type = "checkbox";
+  //   input.id = "item";
+  //   input.addEventListener("click", (e) => {
+  //     changeNumbers(e.target, label);
+  //   });
+  //   label.setAttribute("for", input.id);
   if (task.length <= 1) {
     alert("You need to add a task!");
   } else {
@@ -157,29 +179,31 @@ function addToTasks(taskDiv, label, text, date, priority) {
       removeButton.className = "remove-button";
       removeButton.innerText = "remove";
       //Deactivation button for tasks
-      div.appendChild(input);
+      //   div.appendChild(input);
       div.appendChild(label);
       div.appendChild(removeButton);
       taskDiv.appendChild(div);
-      totalItemsCount++;
-      todoItemsCount++;
-      bool = true;
-      removeButton.addEventListener("click", (e) => {
-        removeTask(div, label, input, removeButton);
-        if (!input.checked) {
-          changeTotalDone(true);
-        }
+      div.className = "test";
+
+      label.addEventListener("click", (e) => {
+        changeNumbers(label);
       });
-      if (todoItemsCount === 1) {
-        document.getElementById("empty-list-span").style.display = "none";
-      }
+      bool = true;
+      changeTotalLeft(true);
+      removeButton.addEventListener("click", (e) => {
+        if (!containsTicked(label)) {
+          changeTotalDone(true);
+          changeTotalLeft(false);
+        }
+        removeTask(div, label, removeButton);
+      });
+      //   if (todoItemsCount === 1) {
+      //     document.getElementById("empty-list-span").style.display = "none";
+      //   }
     } else {
       //If importance number is NOT chosen.
       alert("You need to choose importance level!");
     }
-    return bool;
   }
-  return task;
+  return bool;
 }
-
-///
