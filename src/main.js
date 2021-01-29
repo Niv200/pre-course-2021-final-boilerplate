@@ -14,7 +14,6 @@ sort.addEventListener("click", (e) => {
   //sort State starts at 1
   //sorting by, time&date, priority.
   //4 states.
-  console.log(document.getElementById("tasks-container"));
   sortState = sortState + 1;
   if (sortState > 4) {
     sortState = 1;
@@ -25,10 +24,11 @@ sort.addEventListener("click", (e) => {
       break;
     case 1:
       sortDiv.innerText = "Increasing priority";
-      sortItemsBasedOnPriority(true);
+      sortItemsBasedOnPriority(false);
       break;
     case 2:
       sortDiv.innerText = "Decreasing priority";
+      sortItemsBasedOnPriority(true);
       break;
     case 3:
       sortDiv.innerText = "Closest time";
@@ -64,23 +64,79 @@ button.addEventListener("click", (e) => {
 
 //My functions.
 function sortItemsBasedOnPriority(increase) {
-  let divs = document.getElementsByClassName("todo-container");
   let container = document.getElementById("tasks-container");
-  for (let i = 0; i < divs.length; i++) {
-    console.log(div[i]);
-    container.removeChild(divs);
-    if (increase) {
-    } else {
-    }
+  if (increase) {
+    organizedPriority(container, true);
+  } else {
+    organizedPriority(container, false);
   }
 }
 
-function removeTask(div, label, removeButton) {
+function organizedPriority(div, increase) {
+  let childs = div.getElementsByClassName("todo-container");
+  //I rather create 5 arrays. its easier to edit and work with.
+  let priority1 = [];
+  let priority2 = [];
+  let priority3 = [];
+  let priority4 = [];
+  let priority5 = [];
+  for (let i = 0; i < childs.length; i++) {
+    let priority = JSON.parse(
+      childs[i].getElementsByClassName("todo-priority")[0].innerText
+    );
+    switch (priority) {
+      case 1:
+        priority1.push(childs[i]);
+        childs[i].remove;
+        break;
+      case 2:
+        priority2.push(childs[i]);
+        childs[i].remove;
+        break;
+      case 3:
+        priority3.push(childs[i]);
+        childs[i].remove;
+        break;
+      case 4:
+        priority4.push(childs[i]);
+        childs[i].remove;
+        break;
+      case 5:
+        priority5.push(childs[i]);
+        childs[i].remove;
+        break;
+    }
+  }
+  //Looping through all priorities
+  let priorities = [priority1, priority2, priority3, priority4, priority5];
+  let organized = [];
+  for (let i = 0; i < priorities.length; i++) {
+    if (priorities[i].length > 0) {
+      for (let z = 0; z < priorities[i].length; z++) {
+        if (increase) {
+          organized.push(priorities[i][z]);
+        } else {
+          organized.unshift(priorities[i][z]);
+        }
+      }
+    }
+  }
+  for (let i = 0; i < organized.length; i++) {
+    div.appendChild(organized[i]);
+  }
+}
+
+function getPriority(label) {
+  return JSON.parse(label.innerText);
+}
+///////////////////////
+function removeTask(div, priorityDiv, label, removeButton) {
   if (!containsTicked(label)) {
     // changeTotalLeft(false);
   }
   div.removeChild(label);
   div.removeChild(removeButton);
+  div.removeChild(priorityDiv);
 }
 
 //Function to return a task object. @Not in use@
@@ -205,11 +261,13 @@ function addToTasks(taskDiv, label, text, date, priority) {
     //Find importance number
     if (priority >= 1 && priority <= 5) {
       resetInputs();
+      /////Div piority
+      let priorityDiv = document.createElement("div");
+      priorityDiv.innerText = JSON.parse(priority);
+      priorityDiv.className = "todo-priority";
       task = getTaskText(text, date, priority);
       label.innerText = task;
       label.className = findPriority(priority);
-      console.log(findPriority(priority));
-      console.log(priority);
       let div = document.createElement("div");
       //remove button for task
       let removeButton = document.createElement("button");
@@ -220,6 +278,7 @@ function addToTasks(taskDiv, label, text, date, priority) {
       div.appendChild(removeButton);
       taskDiv.appendChild(div);
       div.className = "todo-container";
+      div.append(priorityDiv);
       ///Reseting sort button and text after adding new value.
       let sortState = 0;
       let sortDiv = document.getElementById("sort-div");
@@ -235,7 +294,7 @@ function addToTasks(taskDiv, label, text, date, priority) {
           changeTotalDone(true);
           changeTotalLeft(false);
         }
-        removeTask(div, label, removeButton);
+        removeTask(div, priorityDiv, label, removeButton);
       });
     } else {
       //If importance number is NOT chosen.
