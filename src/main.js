@@ -6,6 +6,38 @@ let counterHeader = document.getElementById("tasks-left");
 let completedHeader = document.getElementById("completed-tasks");
 let resetButton = document.getElementById("reset");
 let button = document.getElementById("add-button");
+let sort = document.getElementById("sort-button");
+let sortState = 0;
+
+sort.addEventListener("click", (e) => {
+  let sortDiv = document.getElementById("sort-div");
+  //sort State starts at 1
+  //sorting by, time&date, priority.
+  //4 states.
+  console.log(document.getElementById("tasks-container"));
+  sortState = sortState + 1;
+  if (sortState > 4) {
+    sortState = 1;
+  }
+  switch (sortState) {
+    case 0:
+      sortDiv.innerText = "None";
+      break;
+    case 1:
+      sortDiv.innerText = "Increasing priority";
+      sortItemsBasedOnPriority(true);
+      break;
+    case 2:
+      sortDiv.innerText = "Decreasing priority";
+      break;
+    case 3:
+      sortDiv.innerText = "Closest time";
+      break;
+    case 4:
+      sortDiv.innerText = "Furthest time";
+      break;
+  }
+});
 
 resetButton.addEventListener("click", (e) => {
   resetTotalDone();
@@ -31,6 +63,18 @@ button.addEventListener("click", (e) => {
 });
 
 //My functions.
+function sortItemsBasedOnPriority(increase) {
+  let divs = document.getElementsByClassName("todo-container");
+  let container = document.getElementById("tasks-container");
+  for (let i = 0; i < divs.length; i++) {
+    console.log(div[i]);
+    container.removeChild(divs);
+    if (increase) {
+    } else {
+    }
+  }
+}
+
 function removeTask(div, label, removeButton) {
   if (!containsTicked(label)) {
     // changeTotalLeft(false);
@@ -39,7 +83,7 @@ function removeTask(div, label, removeButton) {
   div.removeChild(removeButton);
 }
 
-//Function to return a task object.
+//Function to return a task object. @Not in use@
 function getTaskAsObject(text, priority, date) {
   return {
     text: text,
@@ -155,13 +199,6 @@ function resetTotalDone() {
 function addToTasks(taskDiv, label, text, date, priority) {
   let bool = false;
   let task = text;
-  //   let input = document.createElement("input");
-  //   input.type = "checkbox";
-  //   input.id = "item";
-  //   input.addEventListener("click", (e) => {
-  //     changeNumbers(e.target, label);
-  //   });
-  //   label.setAttribute("for", input.id);
   if (task.length <= 1) {
     alert("You need to add a task!");
   } else {
@@ -179,12 +216,15 @@ function addToTasks(taskDiv, label, text, date, priority) {
       removeButton.className = "remove-button";
       removeButton.innerText = "remove";
       //Deactivation button for tasks
-      //   div.appendChild(input);
       div.appendChild(label);
       div.appendChild(removeButton);
       taskDiv.appendChild(div);
-      div.className = "test";
-
+      div.className = "todo-container";
+      ///Reseting sort button and text after adding new value.
+      let sortState = 0;
+      let sortDiv = document.getElementById("sort-div");
+      sortDiv.innerText = "None";
+      ////
       label.addEventListener("click", (e) => {
         changeNumbers(label);
       });
@@ -197,9 +237,6 @@ function addToTasks(taskDiv, label, text, date, priority) {
         }
         removeTask(div, label, removeButton);
       });
-      //   if (todoItemsCount === 1) {
-      //     document.getElementById("empty-list-span").style.display = "none";
-      //   }
     } else {
       //If importance number is NOT chosen.
       alert("You need to choose importance level!");
