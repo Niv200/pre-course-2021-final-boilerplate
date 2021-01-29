@@ -15,7 +15,7 @@ sort.addEventListener("click", (e) => {
   //sorting by, time&date, priority.
   //4 states.
   sortState = sortState + 1;
-  if (sortState > 4) {
+  if (sortState > 2) {
     sortState = 1;
   }
   switch (sortState) {
@@ -29,12 +29,6 @@ sort.addEventListener("click", (e) => {
     case 2:
       sortDiv.innerText = "Decreasing priority";
       sortItemsBasedOnPriority(true);
-      break;
-    case 3:
-      sortDiv.innerText = "Closest time";
-      break;
-    case 4:
-      sortDiv.innerText = "Furthest time";
       break;
   }
 });
