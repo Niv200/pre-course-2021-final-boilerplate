@@ -1,13 +1,66 @@
 let tasks = [];
+let deletedTasks = [];
 let tickedTasks = [];
 let tasksLeft = 0;
 let tasksCompleted = 0;
 let counterHeader = document.getElementById("tasks-left");
 let completedHeader = document.getElementById("completed-tasks");
 let resetButton = document.getElementById("reset");
+let undoButton = document.getElementById("undo-button");
 let button = document.getElementById("add-button");
 let sort = document.getElementById("sort-button");
 let sortState = 0;
+
+undoButton.addEventListener("click", (e) => {
+  undoLatest();
+});
+
+function resetUndoText(flag) {
+  let text = document.getElementById("undo-text");
+  if (flag) {
+    text.innerText = "Undoing changes!";
+  } else {
+    text.innerText = "Nothing to undo!";
+  }
+}
+
+resetButton.addEventListener("click", (e) => {
+  resetTotalDone();
+  let tickedTasks = document.getElementsByClassName("todo-container");
+  for (i = 0; i < tickedTasks.length; i++) {
+    if (isTicked(tickedTasks[i])) {
+      tickedTasks[i].remove();
+    }
+  }
+});
+
+function isTicked(div) {
+  let label = div.getElementsByTagName("DIV");
+  console.log(label[1].className);
+  let className = label[1].className;
+  if (className.includes("ticked")) {
+    return true;
+  }
+  return false;
+}
+
+function undoLatest() {
+  if (!(deletedTasks.length <= 0)) {
+    let container = document.getElementById("tasks-container");
+    for (let i = 0; i < deletedTasks.length; i++) {
+      let task = deletedTasks[i];
+      container.appendChild(task);
+      if (!isTicked(task)) {
+        changeTotalLeft(true);
+        changeTotalDone(false);
+      } else {
+      }
+    }
+    resetUndoText(false);
+  } else {
+    resetUndoText(false);
+  }
+}
 
 sort.addEventListener("click", (e) => {
   let sortDiv = document.getElementById("sort-div");
@@ -35,25 +88,21 @@ sort.addEventListener("click", (e) => {
 
 resetButton.addEventListener("click", (e) => {
   resetTotalDone();
-  //   for(task of tickedTasks){
-  //       let div = document.createElement("div");
-  //       div.removeChild(input);
-  //       div.removeChild(label);
-  //       div.removeChild(removeButton);
-  //   }
-  let tickedTasks = document.querySelectorAll(".ticked");
-  console.log(tickedTasks);
+  let tickedTasks = document.getElementsByClassName("todo-container");
   for (i = 0; i < tickedTasks.length; i++) {
-    tickedTasks[i].closest("div").remove();
+    if (isTicked(tickedTasks[i])) {
+      tickedTasks[i].remove();
+    }
   }
 });
 
 button.addEventListener("click", (e) => {
-  let task = document.getElementsByTagName("input")[0].value;
-  let taskDiv = document.getElementById("tasks-container");
-  let label = document.createElement("label");
+  let text = document.getElementsByTagName("input")[0].value;
+  // let taskDiv = document.getElementById("tasks-container");
+  // let label = document.createElement("label");
   let priorityInput = document.getElementById("priority-selector").value;
-  addToTasks(taskDiv, label, task, new Date(), priorityInput);
+  // addToTasks(taskDiv, label, task, new Date(), priorityInput);
+  addTask(text, new Date(), priorityInput);
 });
 
 //My functions.
@@ -124,13 +173,19 @@ function getPriority(label) {
   return JSON.parse(label.innerText);
 }
 ///////////////////////
-function removeTask(div, priorityDiv, label, removeButton) {
-  if (!containsTicked(label)) {
+function removeTask(div, textDiv) {
+  if (!containsTicked(textDiv)) {
     // changeTotalLeft(false);
   }
-  div.removeChild(label);
-  div.removeChild(removeButton);
-  div.removeChild(priorityDiv);
+  dumpTasks(div);
+  let text = document.getElementById("undo-text");
+  text.innerText = "Click to undo delete!";
+  div.remove();
+}
+
+//Dump tasks to undo button array.
+function dumpTasks(div) {
+  deletedTasks.push(div);
 }
 
 //Function to return a task object. @Not in use@
@@ -165,6 +220,34 @@ function calculateTime(time) {
   let string = day + "/" + month + "/" + year + " " + hours + ":" + minutes;
   return string;
 }
+//30/1/2021 01:21
+//    30 1 2021 01 21
+//     0 1 2    3  4
+// function findTime(time) {
+//   time = calculateTime(time);
+//   time = time.replace("/", " ");
+//   time = time.replace("/", " ");
+//   time = time.replace(":", " ");
+//   let times = time.split(" ");
+//   let minutes = JSON.parse(times[4]);
+//   let hours = JSON.parse(times[3]);
+//   let date = JSON.parse(times[0]);
+//   let dateMinutes = 1440;
+//   let hoursMinute = 60;
+//   let totalMinutes = minutes + hoursMinute * hours + date * dateMinutes;
+//   return totalMinutes;
+// }
+
+// function orderByTime(increase, tasks) {
+//   for (i = 0; i < tasks.length; i++) {
+//     let todoTask = tasks[i];
+//     let time = JSON.parse(
+//       childs[i].getElementsByClassName("todo-created-at")[0].innerText
+//     );
+//     let findTime(time);
+//   }
+//   return array;
+// }
 
 //Function to return text, date, and priority as a single string.
 function getTaskText(text, date, priority) {
@@ -228,6 +311,16 @@ function containsTicked(label) {
   }
   return false;
 }
+
+function isTicked(div) {
+  let label = div.getElementsByTagName("DIV");
+  console.log(label[1].className);
+  let className = label[1].className;
+  if (className.includes("ticked")) {
+    return true;
+  }
+  return false;
+}
 //function to change the total tasks done counter, if flag then add 1, if !flag subtract 1.
 function changeTotalDone(flag) {
   let text = completedHeader.innerText;
@@ -248,50 +341,65 @@ function resetTotalDone() {
   tasksCompleted = 0;
   completedHeader.innerText = text;
 }
-
-function addToTasks(taskDiv, label, text, date, priority) {
+function addTask(text, date, priority) {
+  taskDiv = document.getElementById("tasks-container");
   let bool = false;
-  let task = text;
-  if (task.length <= 1) {
+  if (text.length <= 0) {
     alert("You need to add a task!");
   } else {
     //Find importance number
     if (priority >= 1 && priority <= 5) {
       resetInputs();
-      /////Div piority
+      //Div priority
       let priorityDiv = document.createElement("div");
       priorityDiv.innerText = JSON.parse(priority);
       priorityDiv.className = "todo-priority";
-      task = getTaskText(text, date, priority);
-      label.innerText = task;
-      label.className = findPriority(priority);
-      let div = document.createElement("div");
+      priorityDiv.classList.add(findPriority(priority));
+      //Div todo-text
+      let textDiv = document.createElement("div");
+      textDiv.innerText = text;
+      textDiv.className = "todo-text";
+      //Creating divs for every data element.
+      let dateDiv = document.createElement("div");
+      dateDiv.className = "todo-created-at";
+      dateDiv.innerText = calculateTime(date);
       //remove button for task
       let removeButton = document.createElement("button");
       removeButton.className = "remove-button";
       removeButton.innerText = "remove";
-      //Deactivation button for tasks
-      div.appendChild(label);
+      //creating and applying childs to a div which applies to todo container
+      let div = document.createElement("div");
+
+      div.appendChild(priorityDiv);
+      div.appendChild(textDiv);
+      div.appendChild(dateDiv);
       div.appendChild(removeButton);
-      taskDiv.appendChild(div);
       div.className = "todo-container";
-      div.append(priorityDiv);
-      ///Reseting sort button and text after adding new value.
-      let sortState = 0;
+
+      taskDiv.appendChild(div);
+      ///Resetting sort button and text after adding new value.
       let sortDiv = document.getElementById("sort-div");
       sortDiv.innerText = "None";
-      ////
-      label.addEventListener("click", (e) => {
-        changeNumbers(label);
+
+      textDiv.addEventListener("click", (e) => {
+        changeNumbers(textDiv);
+      });
+
+      dateDiv.addEventListener("click", (e) => {
+        changeNumbers(textDiv);
+      });
+
+      priorityDiv.addEventListener("click", (e) => {
+        changeNumbers(textDiv);
       });
       bool = true;
       changeTotalLeft(true);
       removeButton.addEventListener("click", (e) => {
-        if (!containsTicked(label)) {
+        if (!containsTicked(textDiv)) {
           changeTotalDone(true);
           changeTotalLeft(false);
         }
-        removeTask(div, priorityDiv, label, removeButton);
+        removeTask(div, textDiv);
       });
     } else {
       //If importance number is NOT chosen.
