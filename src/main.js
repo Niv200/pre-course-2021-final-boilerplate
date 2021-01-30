@@ -159,6 +159,9 @@ function calculateTime(time) {
   if (minutes < 10) {
     minutes = "0" + minutes;
   }
+  if (hours < 10) {
+    hours = "0" + hours;
+  }
   let string = day + "/" + month + "/" + year + " " + hours + ":" + minutes;
   return string;
 }
