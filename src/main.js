@@ -290,6 +290,7 @@ function changeNumbers(label) {
 function getEditTaskButton(todoDiv, textDiv) {
   let editButton = document.createElement("button");
   editButton.innerText = "Edit";
+  editButton.className = "edit-button";
   todoDiv.appendChild(editButton);
   editButton.addEventListener("click", (e) => {
     let newText = window.prompt("Type your changes.");
