@@ -28,11 +28,9 @@
       </select>
       <button id="add-button" class="buttons">Add</button>
     </form>
-    <h3 id="tasks-left">Tasks left : 0</h3>
+    <h3 id="tasks-left">Tasks left : <span id="counter">0</span></h3>
     <div id="tasks-container" class="tasks">
-      <span id="empty-list-span"
-        >You have nothing left! Aren't you gonna add something?</span
-      >
+      <span id="empty-list">Add some tasks!</span>
     </div>
     <button id="reset" class="secondary-buttons">reset</button>
     <button id="sort-button" class="secondary-buttons">Sorted by:</button>
@@ -41,7 +39,9 @@
     <div id="undo-text">Nothing to undo!</div>
     <div id="sort-div">None</div>
     <button id="dark-mode" class="secondary-buttons">Dark Theme</button>
-    <h3 id="completed-tasks">Completed tasks : 0</h3>
+    <h3 id="completed-tasks">
+      Completed tasks : <span id="counter-done">0</span>
+    </h3>
 
     <!--  -->
 

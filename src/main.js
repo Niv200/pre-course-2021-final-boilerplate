@@ -262,15 +262,16 @@ function findPriority(priority) {
 
 //function to change the total tasks left counter, if flag then add 1, if !flag subtract 1.
 function changeTotalLeft(flag) {
-  let text = counterHeader.innerText;
+  let counter = document.getElementById("counter");
+  let count = 0;
   if (flag) {
-    text = text.replace(tasksLeft, tasksLeft + 1);
+    count = tasksLeft + 1;
     tasksLeft = tasksLeft + 1;
   } else {
-    text = text.replace(tasksLeft, tasksLeft - 1);
+    count = tasksLeft - 1;
     tasksLeft = tasksLeft - 1;
   }
-  counterHeader.innerText = text;
+  counter.innerText = count;
 }
 
 //function to change the numbers of both counters once a task has been ticked.
@@ -326,17 +327,19 @@ function isTicked(div) {
 }
 //function to change the total tasks done counter, if flag then add 1, if !flag subtract 1.
 function changeTotalDone(flag) {
-  let text = completedHeader.innerText;
+  let counterDone = document.getElementById("counter-done");
+  let count = 0;
   if (flag) {
-    text = text.replace(tasksCompleted, tasksCompleted + 1);
+    count = tasksCompleted + 1;
     tasksCompleted = tasksCompleted + 1;
   } else {
-    text = text.replace(tasksCompleted, tasksCompleted - 1);
+    count = tasksCompleted - 1;
     tasksCompleted = tasksCompleted - 1;
   }
-  completedHeader.innerText = text;
+  counterDone.innerText = count;
 }
 
+///////////////////////////////
 //A function to reset the total done counter
 function resetTotalDone() {
   let text = completedHeader.innerText;
