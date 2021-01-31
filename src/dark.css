@@ -1,0 +1,66 @@
+* {
+  text-align: center;
+  /* background-image: url("background.jpg"); */
+}
+
+.todo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 7px 40px;
+  background-color: rgb(63, 83, 63);
+  border-radius: 20px;
+  margin: 3px 350px;
+  border-color: lightslategray;
+}
+
+.todo-created-at {
+  padding: 0px 5px;
+}
+
+.todo-priority {
+  padding: 3px 10px;
+  border-radius: 50%;
+  /* box-shadow: 0px 3px rgb(70, 67, 90); */
+}
+/* 
+.todo-priority:hover {
+  transform: translateY(2px);
+  box-shadow: 0px 1px rgb(70, 67, 90);
+} */
+
+.todo-text {
+  padding: 0px 5px;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+}
+
+.very-low {
+  background-color: lightgray;
+}
+
+.low {
+  background-color: gray;
+}
+
+.normal {
+  background-color: white;
+}
+
+.high {
+  background-color: rgb(219, 125, 125);
+}
+
+.very-high {
+  background-color: tomato;
+}
+
+.ticked {
+  color: rgb(9, 59, 59);
+  text-decoration: line-through;
+  /* background-color: teal; */
+  font-style: italic;
+}

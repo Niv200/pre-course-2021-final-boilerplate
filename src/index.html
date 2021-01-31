@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Niv's TODO List</title>
     <script src="utils.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link id="theme" rel="stylesheet" href="style.css" />
   </head>
   <body id="body">
     <!--<h1>
@@ -37,9 +37,17 @@
     <button id="sort-button">Sorted by:</button>
     <!--  -->
     <button id="undo-button">Undo</button>
-    <h2 id="undo-text">Nothing to undo!</button>
+    <div id="undo-text">Nothing to undo!</div>
     <div id="sort-div">None</div>
+    <button id="dark-mode">Theme</button>
     <h3 id="completed-tasks">Completed tasks : 0</h3>
+
+    <!--  -->
+
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <!--  -->
     <script src="main.js"></script>
   </body>
 </html>

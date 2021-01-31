@@ -8,8 +8,18 @@ let completedHeader = document.getElementById("completed-tasks");
 let resetButton = document.getElementById("reset");
 let undoButton = document.getElementById("undo-button");
 let button = document.getElementById("add-button");
+let themeButton = document.getElementById("dark-mode");
 let sort = document.getElementById("sort-button");
 let sortState = 0;
+
+themeButton.addEventListener("click", (e) => {
+  let theme = document.getElementById("theme");
+  if (theme.href.includes("style")) {
+    theme.href = "dark.css";
+  } else {
+    document.getElementById("theme").href = "style.css";
+  }
+});
 
 undoButton.addEventListener("click", (e) => {
   undoLatest();
@@ -26,6 +36,7 @@ function resetUndoText(flag) {
 
 resetButton.addEventListener("click", (e) => {
   resetTotalDone();
+  deletedTasks = [];
   let tickedTasks = document.getElementsByClassName("todo-container");
   for (i = 0; i < tickedTasks.length; i++) {
     if (isTicked(tickedTasks[i])) {
@@ -220,34 +231,6 @@ function calculateTime(time) {
   let string = day + "/" + month + "/" + year + " " + hours + ":" + minutes;
   return string;
 }
-//30/1/2021 01:21
-//    30 1 2021 01 21
-//     0 1 2    3  4
-// function findTime(time) {
-//   time = calculateTime(time);
-//   time = time.replace("/", " ");
-//   time = time.replace("/", " ");
-//   time = time.replace(":", " ");
-//   let times = time.split(" ");
-//   let minutes = JSON.parse(times[4]);
-//   let hours = JSON.parse(times[3]);
-//   let date = JSON.parse(times[0]);
-//   let dateMinutes = 1440;
-//   let hoursMinute = 60;
-//   let totalMinutes = minutes + hoursMinute * hours + date * dateMinutes;
-//   return totalMinutes;
-// }
-
-// function orderByTime(increase, tasks) {
-//   for (i = 0; i < tasks.length; i++) {
-//     let todoTask = tasks[i];
-//     let time = JSON.parse(
-//       childs[i].getElementsByClassName("todo-created-at")[0].innerText
-//     );
-//     let findTime(time);
-//   }
-//   return array;
-// }
 
 //Function to return text, date, and priority as a single string.
 function getTaskText(text, date, priority) {
@@ -303,6 +286,25 @@ function changeNumbers(label) {
   }
 }
 
+//Adds a functioning edit button that edits textDiv inside todoDiv
+function getEditTaskButton(todoDiv, textDiv) {
+  let editButton = document.createElement("button");
+  editButton.innerText = "Edit";
+  todoDiv.appendChild(editButton);
+  editButton.addEventListener("click", (e) => {
+    let newText = window.prompt("Type your changes.");
+    if (newText.length >= 1) {
+      if (newText.length > 45) {
+        alert("Your new task text is too long!");
+      } else {
+        textDiv.innerText = newText;
+      }
+    } else {
+      alert("New task is too short!");
+    }
+  });
+}
+
 function containsTicked(label) {
   for (className of label.classList) {
     if (className === "ticked") {
@@ -341,12 +343,24 @@ function resetTotalDone() {
   tasksCompleted = 0;
   completedHeader.innerText = text;
 }
+
+function returnAsJson(text, date, priority) {
+  // let obj = {
+  //   "text": text,
+  //   "date": date,
+  //   "priority": priority
+  // }
+}
 function addTask(text, date, priority) {
   taskDiv = document.getElementById("tasks-container");
   let bool = false;
   if (text.length <= 0) {
     alert("You need to add a task!");
   } else {
+    if (text.length > 45) {
+      alert("Your task is too long!");
+      return false;
+    }
     //Find importance number
     if (priority >= 1 && priority <= 5) {
       resetInputs();
@@ -373,6 +387,7 @@ function addTask(text, date, priority) {
       div.appendChild(priorityDiv);
       div.appendChild(textDiv);
       div.appendChild(dateDiv);
+      getEditTaskButton(div, textDiv);
       div.appendChild(removeButton);
       div.className = "todo-container";
 
@@ -382,14 +397,6 @@ function addTask(text, date, priority) {
       sortDiv.innerText = "None";
 
       textDiv.addEventListener("click", (e) => {
-        changeNumbers(textDiv);
-      });
-
-      dateDiv.addEventListener("click", (e) => {
-        changeNumbers(textDiv);
-      });
-
-      priorityDiv.addEventListener("click", (e) => {
         changeNumbers(textDiv);
       });
       bool = true;
