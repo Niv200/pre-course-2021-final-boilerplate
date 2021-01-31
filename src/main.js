@@ -342,10 +342,8 @@ function changeTotalDone(flag) {
 ///////////////////////////////
 //A function to reset the total done counter
 function resetTotalDone() {
-  let text = completedHeader.innerText;
-  text = text.replace(tasksCompleted, 0);
   tasksCompleted = 0;
-  completedHeader.innerText = text;
+  document.getElementById("counter-done").innerText = 0;
 }
 
 function returnAsJson(text, date, priority) {
