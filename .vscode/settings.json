@@ -1,6 +1,10 @@
 {
     "cSpell.ignoreWords": [
         "childs",
-        "divs"
+        "divs",
+        "localdata",
+        "onlinedata",
+        "resetdata",
+        "testarr"
     ]
 }

@@ -189,22 +189,14 @@ test("Checking if sort button works! (Second state, decreasing)", async () => {
   expect(todoInner).toBe("2");
 });
 
-// test("Check dark theme! spooky stuff", async () => {
-//   await page.click("#dark-mode"); //After click
-//   //Couldnt find what it takes to retrieve the css page.
-// });
-
-// test("Checking if edit button works!", async () => {
-//   await page.click(".edit-button"); //After click
-//   const newRename = "This is renamed task!";
-//   await page.on("dialog", async (dialog) => {
-//     console.log(await dialog.defaultValue(newRename));
-//   });
-//   await page.click("input[name='prompt']");
-
-//   const todoText = await page.$$(".todo-priority");
-//   const todoInner = await (
-//     await todoText[0].getProperty("innerText")
-//   ).jsonValue();
-//   expect(todoInner).toBe("2");
-// });
+test("Check if task can be marked and if reset removes it", async () => {
+  await page.click(".todo-text"); //After click
+  const todoText = await page.$$(".todo-text");
+  await page.click("#reset");
+  const todoText2 = await page.$$(".todo-text");
+  let bool = true;
+  if (todoText2 === todoText) {
+    bool = false;
+  }
+  expect(bool).toBe(true);
+});

@@ -1,3 +1,4 @@
+/////////////////////////////////////////
 let tasks = [];
 let deletedTasks = [];
 let tickedTasks = [];
@@ -11,6 +12,7 @@ let button = document.getElementById("add-button");
 let themeButton = document.getElementById("dark-mode");
 let sort = document.getElementById("sort-button");
 let sortState = 0;
+let dataBaseName = "todo-data-base";
 
 themeButton.addEventListener("click", (e) => {
   let theme = document.getElementById("theme");
@@ -19,6 +21,7 @@ themeButton.addEventListener("click", (e) => {
   } else {
     document.getElementById("theme").href = "style.css";
   }
+  console.log(tasks);
 });
 
 undoButton.addEventListener("click", (e) => {
@@ -47,7 +50,6 @@ resetButton.addEventListener("click", (e) => {
 
 function isTicked(div) {
   let label = div.getElementsByTagName("DIV");
-  console.log(label[1].className);
   let className = label[1].className;
   if (className.includes("ticked")) {
     return true;
@@ -71,13 +73,11 @@ function undoLatest() {
   } else {
     resetUndoText(false);
   }
+  deletedTasks = [];
 }
 
 sort.addEventListener("click", (e) => {
   let sortDiv = document.getElementById("sort-div");
-  //sort State starts at 1
-  //sorting by, time&date, priority.
-  //4 states.
   sortState = sortState + 1;
   if (sortState > 2) {
     sortState = 1;
@@ -109,11 +109,8 @@ resetButton.addEventListener("click", (e) => {
 
 button.addEventListener("click", (e) => {
   let text = document.getElementsByTagName("input")[0].value;
-  // let taskDiv = document.getElementById("tasks-container");
-  // let label = document.createElement("label");
   let priorityInput = document.getElementById("priority-selector").value;
-  // addToTasks(taskDiv, label, task, new Date(), priorityInput);
-  addTask(text, new Date(), priorityInput);
+  addTask(text, calculateTime(new Date()), priorityInput, false);
 });
 
 //My functions.
@@ -183,12 +180,14 @@ function organizedPriority(div, increase) {
 function getPriority(label) {
   return JSON.parse(label.innerText);
 }
-///////////////////////
+
 function removeTask(div, textDiv) {
-  if (!containsTicked(textDiv)) {
-    // changeTotalLeft(false);
-  }
   dumpTasks(div);
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i]["text"] === textDiv.innerText) {
+      tasks.splice(i, i + 1);
+    }
+  }
   let text = document.getElementById("undo-text");
   text.innerText = "Click to undo delete!";
   div.remove();
@@ -200,11 +199,12 @@ function dumpTasks(div) {
 }
 
 //Function to return a task object. @Not in use@
-function getTaskAsObject(text, priority, date) {
+function getTaskAsObject(todoText, todoPriority, todoDate, isTicked) {
   return {
-    text: text,
-    priority: priority,
-    date: date.now,
+    text: todoText,
+    priority: todoPriority,
+    date: todoDate,
+    ticked: isTicked,
   };
 }
 
@@ -279,14 +279,43 @@ function changeNumbers(label) {
   if (containsTicked(label)) {
     changeTotalLeft(true);
     label.classList.remove("ticked");
+    changeTicked(label);
     changeTotalDone(false);
   } else {
     changeTotalLeft(false);
     label.classList.add("ticked");
+    changeTicked(label);
     changeTotalDone(true);
   }
 }
 
+function changeTicked(div) {
+  let text = div.innerText;
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i] != undefined) {
+      if (tasks[i]["text"] === text) {
+        if (tasks[i]["ticked"] === true) {
+          tasks[i]["ticked"] = false;
+        } else {
+          tasks[i]["ticked"] = true;
+        }
+      }
+    }
+  }
+}
+
+function removeTaskFromTasks(div) {
+  let divs = div.getElementsByTagName("div");
+  for (let i = 0; i < divs.length; i++) {
+    if (divs[i][0] === text) {
+      if (divs[i][3] === true) {
+        divs[i][3] = false;
+      } else {
+        divs[i][3] = true;
+      }
+    }
+  }
+}
 //Adds a functioning edit button that edits textDiv inside todoDiv
 function getEditTaskButton(todoDiv, textDiv) {
   let editButton = document.createElement("button");
@@ -318,7 +347,6 @@ function containsTicked(label) {
 
 function isTicked(div) {
   let label = div.getElementsByTagName("DIV");
-  console.log(label[1].className);
   let className = label[1].className;
   if (className.includes("ticked")) {
     return true;
@@ -339,23 +367,18 @@ function changeTotalDone(flag) {
   counterDone.innerText = count;
 }
 
-///////////////////////////////
 //A function to reset the total done counter
 function resetTotalDone() {
   tasksCompleted = 0;
   document.getElementById("counter-done").innerText = 0;
 }
 
-function returnAsJson(text, date, priority) {
-  // let obj = {
-  //   "text": text,
-  //   "date": date,
-  //   "priority": priority
-  // }
-}
-function addTask(text, date, priority) {
+async function addTask(text, date, priority, ticked, add) {
   taskDiv = document.getElementById("tasks-container");
   let bool = false;
+  if (text === undefined) {
+    return bool;
+  }
   if (text.length <= 0) {
     alert("You need to add a task!");
   } else {
@@ -375,10 +398,13 @@ function addTask(text, date, priority) {
       let textDiv = document.createElement("div");
       textDiv.innerText = text;
       textDiv.className = "todo-text";
+      if (ticked) {
+        textDiv.classList.add("ticked");
+      }
       //Creating divs for every data element.
       let dateDiv = document.createElement("div");
       dateDiv.className = "todo-created-at";
-      dateDiv.innerText = calculateTime(date);
+      dateDiv.innerText = date;
       //remove button for task
       let removeButton = document.createElement("button");
       removeButton.className = "remove-button";
@@ -392,12 +418,17 @@ function addTask(text, date, priority) {
       getEditTaskButton(div, textDiv);
       div.appendChild(removeButton);
       div.className = "todo-container";
-
       taskDiv.appendChild(div);
       ///Resetting sort button and text after adding new value.
-      let sortDiv = document.getElementById("sort-div");
-      sortDiv.innerText = "None";
-
+      if (add) {
+        console.log(add);
+        tasks.push({
+          text: textDiv.innerText,
+          priority: priorityDiv.innerText,
+          date: dateDiv.innerText,
+          ticked: false,
+        });
+      }
       textDiv.addEventListener("click", (e) => {
         changeNumbers(textDiv);
       });
@@ -417,3 +448,114 @@ function addTask(text, date, priority) {
   }
   return bool;
 }
+
+async function setupDatabase() {
+  tasks.push(toObject("test 1", new Date(), "2", false));
+  tasks.push(toObject("test 2", new Date(), "4", true));
+  setPersistent(dataBaseName, tasks);
+  todoTasks = await getPersistent(dataBaseName);
+  tasks = todoTasks;
+  console.log(todoTasks);
+  if (todoTasks != null && todoTasks != undefined) {
+    for (let i = 0; i < todoTasks.length; i++) {
+      if (todoTasks[i] != null && todoTasks[i] != undefined) {
+        taskFromObj(todoTasks[i]);
+      }
+    }
+  }
+}
+
+function taskFromObj(obj) {
+  let text = obj["text"];
+  let priority = obj["priority"];
+  let ticked = obj["ticked"];
+  let date = obj["date"];
+  addTask(text, date, priority, ticked, false);
+}
+
+function saveTasks() {
+  setPersistent(dataBaseName, tasks);
+}
+
+function toObject(textInner, dateInner, priorityInner, tickedInner) {
+  return {
+    text: textInner,
+    priority: priorityInner,
+    ticked: tickedInner,
+    date: dateInner,
+  };
+}
+
+function fromObject(obj) {
+  let text = obj["text"];
+  let priority = obj["priority"];
+  let ticked = obj["ticked"];
+  let date = obj["date"];
+  // return div task;
+}
+
+////////////////////////////////////////////////////////////////
+let debugButton = document.getElementById("debug");
+let debugDiv = document.getElementById("debug-div");
+
+debugButton.addEventListener("click", (e) => {
+  if (debugDiv.style.display === "none") {
+    debugDiv.style.display = "block";
+  } else {
+    debugDiv.style.display = "none";
+  }
+});
+
+let read = document.getElementById("1");
+let save = document.getElementById("2");
+let update = document.getElementById("3");
+let data = document.getElementById("4");
+let add = document.getElementById("5");
+let resetdata = document.getElementById("6");
+let localdata = document.getElementById("localdata");
+let onlinedata = document.getElementById("onlinedata");
+let testarr = [];
+
+read.addEventListener("click", (e) => {
+  console.log(testarr);
+  if (testarr.length <= 0) {
+    localdata.innerText = "No data found!";
+  } else {
+    localdata.innerText = testarr;
+  }
+});
+
+save.addEventListener("click", (e) => {
+  setPersistent(dataBaseName, testarr);
+});
+
+update.addEventListener("click", (e) => {
+  getData();
+});
+
+data.addEventListener("click", (e) => {
+  console.log(getDataArr());
+  if (getDataArr().length <= 0) {
+    onlinedata.innerText = "No data found!";
+  } else {
+    onlinedata.innerText = getDataArr();
+  }
+});
+
+add.addEventListener("click", (e) => {
+  testarr.push(getTaskAsObject("hello", "2", new Date(), false));
+});
+
+resetdata.addEventListener("click", (e) => {
+  testarr = [];
+  localdata.innerText = "No data found!";
+});
+
+async function getData() {
+  testarr = await getPersistent(dataBaseName);
+}
+async function getDataArr() {
+  let arr = await getPersistent(dataBaseName);
+  return arr;
+}
+console.log(getDataArr());
