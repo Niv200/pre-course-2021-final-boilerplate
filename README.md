@@ -60,6 +60,19 @@ This button adds your task into the todo list. be sure to give it some text and 
 **Dark theme**
 Click this to change your task list into dark mode :)
 
+##### Bonuses
+
+- Sort button with 2 states
+- ticking tasks to consider them done
+- reset button to quickly remove all ticked task
+- theme button, allows you to change the theme of the page, GO DARKSIDE!
+- I added a debug menu to show that I can use json bin, however did not manage to intergrate it into the code.
+- I have my own puppeteer class that runs its own custom tests.
+- I have undo button to reuse the deleted tasks
+- Also added edit button on each task, allows to edit a task on the go.
+- Added remove button for each task
+- Each priority will be marked according to colour from 1 to 5.
+
 # ![Debug](./readme-files/debugmenu.png)
 
 ##### Debug
