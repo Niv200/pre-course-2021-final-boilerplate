@@ -21,7 +21,6 @@ themeButton.addEventListener("click", (e) => {
   } else {
     document.getElementById("theme").href = "style.css";
   }
-  load();
 });
 
 undoButton.addEventListener("click", (e) => {
@@ -106,14 +105,12 @@ resetButton.addEventListener("click", (e) => {
       tickedTasks[i].remove();
     }
   }
-  saveData();
 });
 
 button.addEventListener("click", (e) => {
   let text = document.getElementsByTagName("input")[0].value;
   let priorityInput = document.getElementById("priority-selector").value;
   addTask(text, calculateTime(new Date()), priorityInput, false, false);
-  saveData();
 });
 
 //My functions.
@@ -194,7 +191,6 @@ function removeTask(div, textDiv) {
   let text = document.getElementById("undo-text");
   text.innerText = "Click to undo delete!";
   div.remove();
-  saveData();
 }
 
 //Dump tasks to undo button array.
