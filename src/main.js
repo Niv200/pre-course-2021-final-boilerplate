@@ -440,6 +440,15 @@ function addTask(text, date, priority, ticked, add) {
   return bool;
 }
 
+function getTaskAsObject(todoText, todoPriority, todoDate, isTicked) {
+  return {
+    text: todoText,
+    priority: todoPriority,
+    date: todoDate,
+    ticked: isTicked,
+  };
+}
+
 //Debug menu to check jsonbin.io
 let debugButton = document.getElementById("debug");
 let debugDiv = document.getElementById("debug-div");
