@@ -2,6 +2,8 @@
 
 ##### What is this?
 
+[Go to my project in github!](https://niv200.github.io/pre-course-2021-final-boilerplate/src/index.html)
+
 This is a todo list app for the precourse of scaleup velocity.\
 a task can be added via the input box, after that, chose your priority (ranges from 1 to 5, where 5 is most important.)\
 each task can be removed or _"ticked"_ off, removing the task simply mean eliminating it from the \
@@ -64,22 +66,23 @@ Click this to change your task list into dark mode :)
 
 Since I stayed up all night and almost figured it out but not really, I added a debug\
  section to show that I am able to use json and jsonbin to store and read values and sets.\
-To open the debug menu, press the debug button, a following section will be revealed.\
+To open the debug menu, press the debug button, a following section will be revealed.
 
 **Debug buttons**
 
--Read local data - Shows you the current data stored in an array, this is stored locally and will reset with every refresh.
-since its in an array, you can look up in the console to see the objects are in the array and their values.
--Add data - this button simply adds a simple task object into the local data, after hitting this button, hit read local data and you will see the object. for further detail look at your console.
--Save data - this button allows your to save the local array into jsonbin online, after hitting this button no output will be shown, to access the data see next buttons.
--Retrieve data - this buttons allows your page to read the data from jsonbin.io and put it into the local data array set.
--Display data - this shows the data stored in jsonbin.io, it will show you a promise in the html page, however itll show your the inner objects in the console.
--Reset local data - a button to reset local data, that way you can check if you retrieved your data from online or locally.
+- Read local data - Shows you the current data stored in an array, this is stored locally and will reset with every refresh.
+  since its in an array, you can look up in the console to see the objects are in the array and their values.
+- Add data - this button simply adds a simple task object into the local data, after hitting this button, hit read local data and you will see the object. for further detail look at your console.
+- Save data - this button allows your to save the local array into jsonbin online, after hitting this button no output will be shown, to access the data see next buttons.
+- Retrieve data - this buttons allows your page to read the data from jsonbin.io and put it into the local data array set.
+- Display data - this shows the data stored in jsonbin.io, it will show you a promise in the html page, however itll show your the inner objects in the console.
+- Reset local data - a button to reset local data, that way you can check if you retrieved your data from online or locally.
 
-Press the read button, youll see theres no data,
-now press add data twice, this will add 2 objects into the local array, pressing read again will
-show you that two objects were added.
-when you press save data the data is being sent into jsonbin.io, so by resetting the local data, one can check if the retrieve data button works
-by clicking on it which will dump the data into the local array.
-then, press read local data.
+Press the read button, youll see theres no data,\
+now press add data twice, this will add 2 objects into the local array, pressing read again will\
+show you that two objects were added.\
+when you press save data the data is being sent into jsonbin.io, so by resetting the local data, one can check if the retrieve data button works\
+by clicking on it which will dump the data into the local array.\
+then, press read local data.\
+
 _This is a proof of concept that I can work with json and jsonbin.io, however I did not manage to introduce it into my todo list._
