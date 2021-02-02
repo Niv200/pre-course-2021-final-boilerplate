@@ -2,23 +2,25 @@
   transition-duration: 2s;
   text-align: center;
   /* background-image: url("background.jpg"); */
+  font-size: 30px;
 }
 
 .buttons {
-  padding: 4px 10px;
-  margin: 4px 0;
+  font-size: xx-large;
+  padding: 12px 40px;
+  margin-top: 80px;
   box-sizing: border-box;
-  background-color: #424242;
+  background-color: #165f7c;
   color: white;
-  height: 25px;
-  border-radius: 10px;
+  height: 60px;
+  border-radius: 15px;
   border: none;
   outline: none;
   transition-duration: 0.3s;
 }
 
 #add-button:hover {
-  background-color: #303030;
+  background-color: #1e4f63;
   transition-duration: 0.3s;
   cursor: grab;
 }
@@ -27,9 +29,9 @@
   padding: 4px 10px;
   margin: 4px 0;
   box-sizing: border-box;
-  background-color: rgb(59, 78, 90);
+  background-color: #3d5666;
   color: white;
-  height: 25px;
+  height: 40px;
   border-radius: 10px;
   border: none;
   outline: none;
@@ -37,18 +39,18 @@
 }
 
 .secondary-buttons:hover {
-  background-color: rgb(42, 55, 63);
+  background-color: #24323b;
   transition-duration: 0.3s;
   cursor: grab;
 }
 
 #dark-mode {
-  box-shadow: 0px 4px rgb(33, 43, 49);
+  box-shadow: 0px 4px #0f4163;
 }
 
 #dark-mode:hover {
   transform: translateY(3px);
-  box-shadow: 0px 1px rgb(33, 43, 49);
+  box-shadow: 0px 1px #0f4163;
 }
 
 .edit-button {
@@ -58,19 +60,19 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 30px;
 
   transition-duration: 0.4s;
   cursor: pointer;
-  background-color: rgb(106, 147, 172);
+  background-color: rgb(38, 59, 78);
   color: black;
-  border: 2px solid #f44336;
+  border: 5px solid #314f8f;
   border-radius: 10px;
   transition-duration: 0.3s;
 }
 
 .edit-button:hover {
-  background-color: #f44336;
+  background-color: #314f8f;
   transition-duration: 0.3s;
   color: white;
 }
@@ -82,19 +84,18 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 30px;
 
-  transition-duration: 0.4s;
   cursor: pointer;
-  background-color: rgb(106, 147, 172);
+  background-color: rgb(38, 59, 78);
   color: black;
-  border: 2px solid #f44336;
+  border: 5px solid #314f8f;
   border-radius: 10px;
   transition-duration: 0.3s;
 }
 
 .remove-button:hover {
-  background-color: #f44336;
+  background-color: #314f8f;
   transition-duration: 0.3s;
   color: white;
 }
@@ -103,29 +104,43 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px 40px;
-  background-color: rgb(87, 120, 141);
-  border-radius: 20px;
-  margin: 3px 350px;
-  border-color: lightslategray;
+  background-color: rgb(66, 108, 133);
+  border-color: rgb(146, 167, 189);
+  margin-left: 10%;
+  width: 80%;
+  border-radius: 50px;
+  margin-bottom: 30px;
 }
 
 .todo-created-at {
-  padding: 0px 5px;
+  margin-top: 5px;
+  font-size: 40px;
 }
 
 .todo-priority {
-  padding: 2px 10px;
+  font-size: large;
+  width: 57px;
   border-radius: 50%;
+  padding-top: 3px;
+  font-size: 40px;
 }
 
 .todo-text {
-  padding: 0px 5px;
+  margin-top: 5px;
+  font-size: 40px;
 }
 
 .tasks {
   display: flex;
   flex-direction: column;
+}
+
+#tasks-left {
+  font-size: 40px;
+}
+
+#completed-tasks {
+  font-size: 40px;
 }
 
 .very-low {
@@ -149,7 +164,7 @@
 }
 
 .ticked {
-  color: rgb(7, 43, 43);
+  color: rgb(9, 59, 59);
   text-decoration: line-through;
   /* background-color: teal; */
   font-style: italic;
@@ -168,8 +183,8 @@ body {
   animation: slide 3s ease-in-out infinite alternate;
   background-image: linear-gradient(
     -60deg,
-    rgb(44, 51, 56) 50%,
-    rgb(25, 27, 29) 50%
+    rgb(78, 83, 87) 50%,
+    rgb(49, 54, 58) 50%
   );
   bottom: 0;
   left: -50%;
@@ -209,4 +224,12 @@ body {
   100% {
     transform: translateX(25%);
   }
+}
+
+#onlinedata {
+  margin: 50px 0px 50px 0px;
+}
+
+#localdata {
+  margin: 50px 0px 50px 0px;
 }

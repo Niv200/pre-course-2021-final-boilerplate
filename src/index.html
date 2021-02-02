@@ -11,12 +11,12 @@
     <!--<h1>
        <img class="titleImage" src="./make it happen.jpg" alt="make it happen" /> 
     </h1> -->
-    <form onsubmit="return false">
+    <form class="form-class" onsubmit="return false">
       <input
         id="text-input"
         class="buttons"
         type="text"
-        placeholder="What's your goal today?"
+        placeholder="Whats for today?"
       />
       <select id="priority-selector" name="number" class="buttons">
         <option disabled selected value>importance</option>
@@ -29,15 +29,12 @@
       <button id="add-button" class="buttons">Add</button>
     </form>
     <h3 id="tasks-left">Tasks left : <span id="counter">0</span></h3>
-    <div id="tasks-container" class="tasks">
-      <span id="empty-list">Add some tasks!</span>
-    </div>
+    <div id="tasks-container" class="tasks"></div>
     <button id="reset" class="secondary-buttons">reset</button>
     <button id="sort-button" class="secondary-buttons">Sorted by:</button>
     <!--  -->
     <button id="undo-button" class="secondary-buttons">Undo</button>
     <div id="undo-text">Nothing to undo!</div>
-    <div id="sort-div">None</div>
     <button id="dark-mode" class="secondary-buttons">Dark Theme</button>
     <h3 id="completed-tasks">
       Completed tasks : <span id="counter-done">0</span>

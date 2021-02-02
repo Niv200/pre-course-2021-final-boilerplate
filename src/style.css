@@ -2,16 +2,18 @@
   transition-duration: 2s;
   text-align: center;
   /* background-image: url("background.jpg"); */
+  font-size: 30px;
 }
 
 .buttons {
-  padding: 4px 10px;
-  margin: 4px 0;
+  font-size: xx-large;
+  padding: 12px 40px;
+  margin-top: 80px;
   box-sizing: border-box;
   background-color: #38c065;
   color: white;
-  height: 25px;
-  border-radius: 10px;
+  height: 60px;
+  border-radius: 15px;
   border: none;
   outline: none;
   transition-duration: 0.3s;
@@ -27,9 +29,9 @@
   padding: 4px 10px;
   margin: 4px 0;
   box-sizing: border-box;
-  background-color: #2b9eeb;
+  background-color: #1b6596;
   color: white;
-  height: 25px;
+  height: 40px;
   border-radius: 10px;
   border: none;
   outline: none;
@@ -37,7 +39,7 @@
 }
 
 .secondary-buttons:hover {
-  background-color: #206897;
+  background-color: #174869;
   transition-duration: 0.3s;
   cursor: grab;
 }
@@ -58,19 +60,19 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 30px;
 
   transition-duration: 0.4s;
   cursor: pointer;
   background-color: lightgreen;
   color: black;
-  border: 2px solid #f44336;
+  border: 5px solid #265839;
   border-radius: 10px;
   transition-duration: 0.3s;
 }
 
 .edit-button:hover {
-  background-color: #f44336;
+  background-color: #265839;
   transition-duration: 0.3s;
   color: white;
 }
@@ -82,18 +84,18 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 30px;
 
   cursor: pointer;
   background-color: lightgreen;
   color: black;
-  border: 2px solid #f44336;
+  border: 5px solid #265839;
   border-radius: 10px;
   transition-duration: 0.3s;
 }
 
 .remove-button:hover {
-  background-color: #f44336;
+  background-color: #265839;
   transition-duration: 0.3s;
   color: white;
 }
@@ -102,32 +104,43 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* padding: 5px 40px; */
   background-color: lightgreen;
-  /* margin: 3px 350px; */
   border-color: lightslategray;
-  margin-left: 20%;
-  margin-right: 20%;
-  border-radius: 20px;
+  margin-left: 10%;
+  width: 80%;
+  border-radius: 50px;
+  margin-bottom: 30px;
 }
 
 .todo-created-at {
-  padding: 0px 5px;
+  margin-top: 5px;
+  font-size: 40px;
 }
 
 .todo-priority {
-  height: 50%;
-  width: 5%;
+  font-size: large;
+  width: 57px;
   border-radius: 50%;
+  padding-top: 3px;
+  font-size: 40px;
 }
 
 .todo-text {
-  padding: 0px 5px;
+  margin-top: 5px;
+  font-size: 40px;
 }
 
 .tasks {
   display: flex;
   flex-direction: column;
+}
+
+#tasks-left {
+  font-size: 40px;
+}
+
+#completed-tasks {
+  font-size: 40px;
 }
 
 .very-low {
@@ -170,7 +183,7 @@ body {
   animation: slide 3s ease-in-out infinite alternate;
   background-image: linear-gradient(
     -60deg,
-    rgb(1, 153, 255) 50%,
+    rgb(20, 152, 240) 50%,
     rgb(89, 103, 112) 50%
   );
   bottom: 0;
@@ -213,6 +226,10 @@ body {
   }
 }
 
-.hidedebug {
-  visibility: hidden;
+#onlinedata {
+  margin: 50px 0px 50px 0px;
+}
+
+#localdata {
+  margin: 50px 0px 50px 0px;
 }

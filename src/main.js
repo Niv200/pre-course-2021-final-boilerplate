@@ -21,7 +21,6 @@ themeButton.addEventListener("click", (e) => {
   } else {
     document.getElementById("theme").href = "style.css";
   }
-  console.log(tasks);
 });
 
 undoButton.addEventListener("click", (e) => {
@@ -59,6 +58,7 @@ function isTicked(div) {
 
 function undoLatest() {
   if (!(deletedTasks.length <= 0)) {
+    sort.innerText = "Sort";
     let container = document.getElementById("tasks-container");
     for (let i = 0; i < deletedTasks.length; i++) {
       let task = deletedTasks[i];
@@ -77,21 +77,20 @@ function undoLatest() {
 }
 
 sort.addEventListener("click", (e) => {
-  let sortDiv = document.getElementById("sort-div");
   sortState = sortState + 1;
   if (sortState > 2) {
     sortState = 1;
   }
   switch (sortState) {
     case 0:
-      sortDiv.innerText = "None";
+      sort.innerText = "Sort";
       break;
     case 1:
-      sortDiv.innerText = "Increasing priority";
+      sort.innerText = "Priority up";
       sortItemsBasedOnPriority(false);
       break;
     case 2:
-      sortDiv.innerText = "Decreasing priority";
+      sort.innerText = "Priority down";
       sortItemsBasedOnPriority(true);
       break;
   }
@@ -100,6 +99,7 @@ sort.addEventListener("click", (e) => {
 resetButton.addEventListener("click", (e) => {
   resetTotalDone();
   let tickedTasks = document.getElementsByClassName("todo-container");
+  sort.innerText = "Sort";
   for (i = 0; i < tickedTasks.length; i++) {
     if (isTicked(tickedTasks[i])) {
       tickedTasks[i].remove();
@@ -373,7 +373,8 @@ function resetTotalDone() {
   document.getElementById("counter-done").innerText = 0;
 }
 
-async function addTask(text, date, priority, ticked, add) {
+//Function to add task
+function addTask(text, date, priority, ticked, add) {
   taskDiv = document.getElementById("tasks-container");
   let bool = false;
   if (text === undefined) {
@@ -421,7 +422,6 @@ async function addTask(text, date, priority, ticked, add) {
       taskDiv.appendChild(div);
       ///Resetting sort button and text after adding new value.
       if (add) {
-        console.log(add);
         tasks.push({
           text: textDiv.innerText,
           priority: priorityDiv.innerText,
@@ -439,6 +439,7 @@ async function addTask(text, date, priority, ticked, add) {
           changeTotalDone(true);
           changeTotalLeft(false);
         }
+        sort.innerText = "Sort";
         removeTask(div, textDiv);
       });
     } else {
@@ -449,54 +450,10 @@ async function addTask(text, date, priority, ticked, add) {
   return bool;
 }
 
-async function setupDatabase() {
-  tasks.push(toObject("test 1", new Date(), "2", false));
-  tasks.push(toObject("test 2", new Date(), "4", true));
-  setPersistent(dataBaseName, tasks);
-  todoTasks = await getPersistent(dataBaseName);
-  tasks = todoTasks;
-  console.log(todoTasks);
-  if (todoTasks != null && todoTasks != undefined) {
-    for (let i = 0; i < todoTasks.length; i++) {
-      if (todoTasks[i] != null && todoTasks[i] != undefined) {
-        taskFromObj(todoTasks[i]);
-      }
-    }
-  }
-}
-
-function taskFromObj(obj) {
-  let text = obj["text"];
-  let priority = obj["priority"];
-  let ticked = obj["ticked"];
-  let date = obj["date"];
-  addTask(text, date, priority, ticked, false);
-}
-
-function saveTasks() {
-  setPersistent(dataBaseName, tasks);
-}
-
-function toObject(textInner, dateInner, priorityInner, tickedInner) {
-  return {
-    text: textInner,
-    priority: priorityInner,
-    ticked: tickedInner,
-    date: dateInner,
-  };
-}
-
-function fromObject(obj) {
-  let text = obj["text"];
-  let priority = obj["priority"];
-  let ticked = obj["ticked"];
-  let date = obj["date"];
-  // return div task;
-}
-
-////////////////////////////////////////////////////////////////
+//Debug menu to check jsonbin.io
 let debugButton = document.getElementById("debug");
 let debugDiv = document.getElementById("debug-div");
+debugDiv.style.display = "none";
 
 debugButton.addEventListener("click", (e) => {
   if (debugDiv.style.display === "none") {
