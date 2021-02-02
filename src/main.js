@@ -505,4 +505,3 @@ async function getDataArr() {
   let arr = await getPersistent(dataBaseName);
   return arr;
 }
-console.log(getDataArr());
