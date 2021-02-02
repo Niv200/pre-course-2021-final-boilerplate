@@ -1,48 +1,53 @@
 # ![Debug](./readme-files/addtask.png)
 
-## What is this?
+##### What is this?
 
-This is a todo list app for the precourse of scaleup velocity.
-a task can be added via the input box, after that, chose your priority (ranges from 1 to 5, where 5 is most important.)
-each task can be removed or _"ticked"_ off, removing the task simply mean eliminating it from the todo list, whilst ticking a task means it text turns strikethrough and grey, which indicates that you may have done it, or that you want to return it for whatever reason.
+This is a todo list app for the precourse of scaleup velocity.\
+a task can be added via the input box, after that, chose your priority (ranges from 1 to 5, where 5 is most important.)\
+each task can be removed or _"ticked"_ off, removing the task simply mean eliminating it from the \
+todo list, whilst ticking a task means it text turns strikethrough and grey, which indicates that you \
+may have done it, or that you want to return it for whatever reason.
 
-## Whats in this app?
+##### Whats in this app?
 
--Way to add tasks and priorities to each task
--Each task can be edited individually and be changed on the go.
--Tasks can be "ticked", for explanation look above.
--Undo button
--Reset button
--Sort button
--Delete task button
--DARK THEMEEEE
+- Way to add tasks and priorities to each task
+- Each task can be edited individually and be changed on the go.
+- Tasks can be "ticked", for explanation look above.
+- Undo button
+- Reset button
+- Sort button
+- Delete task button
+- DARK THEMEEEE
 
-## Puppeteer
+##### Puppeteer
 
-This code uses my own puppeteer class to test itself out!
-look at MyTests.test.js for further information.
-do note, it uses preset values to check if the values are matching what is expected, meaning the data set for the puppeteer cannot be changed nor modified unless you are also willing to modify the puppeteer class.
+This code uses my own puppeteer class to test itself out!\
+look at MyTests.test.js for further information.\
+do note, it uses preset values to check if the values are
+matching what is expected, meaning the data set for the puppeteer \
+cannot be changed nor modified unless you are also willing to modify the puppeteer class.\
 The puppeteer will run 16 tests, checking for the following:
--Adding first task
--Checking if tasks left counter is increased
--Checking if tasks completed stayed same since no task was completed yet.
--Checking if task can be removed
--Check if undo returns deleted task
--Adding 2 more tasks with different priorities
--Adding 2 more tasks and ticking them done!
--Checking if tasks left is 4 since now we have 6 tasks, 2 of which are ticked and considered 'done' so only 4 left
--Checking if tasks completed increased since we added ticked tasks
--Checking if reset button works and deleted ticked tasks
--Checking if completed tasks went down by 1 since we hit reset and the counter should be reset
--Checking if tasks left is now 4 again
--Checking that undo does NOT work after reset (also gets reset)
--Checking if sort button works! (First state, increasing)
--Checking if sort button works! (Second state, decreasing)
--Check if task can be marked
+
+- Adding first task
+- Checking if tasks left counter is increased
+- Checking if tasks completed stayed same since no task was completed yet.
+- Checking if task can be removed
+- Check if undo returns deleted task
+- Adding 2 more tasks with different priorities
+- Adding 2 more tasks and ticking them done!
+- Checking if tasks left is 4 since now we have 6 tasks, 2 of which are ticked and considered 'done' so only 4 left
+- Checking if tasks completed increased since we added ticked tasks
+- Checking if reset button works and deleted ticked tasks
+- Checking if completed tasks went down by 1 since we hit reset and the counter should be reset
+- Checking if tasks left is now 4 again
+- Checking that undo does NOT work after reset (also gets reset)
+- Checking if sort button works! (First state, increasing)
+- Checking if sort button works! (Second state, decreasing)
+- Check if task can be marked
 
 # ![Debug](./readme-files/buttons.png)
 
-## Explanation for buttons
+##### Explanation for buttons
 
 **Text box**
 This box contains your task text and info, this can later be modified and changed.
@@ -55,10 +60,11 @@ Click this to change your task list into dark mode :)
 
 # ![Debug](./readme-files/debugmenu.png)
 
-## Debug
+##### Debug
 
-Since I stayed up all night and almost figured it out but not really, I added a debug section to show that I am able to use json and jsonbin to store and read values and sets.
-To open the debug menu, press the debug button, a following section will be revealed.
+Since I stayed up all night and almost figured it out but not really, I added a debug\
+ section to show that I am able to use json and jsonbin to store and read values and sets.\
+To open the debug menu, press the debug button, a following section will be revealed.\
 
 **Debug buttons**
 
