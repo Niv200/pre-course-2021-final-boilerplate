@@ -1,9 +1,9 @@
-/////////////////////////////////////////
 let tasks = [];
 let deletedTasks = [];
 let tickedTasks = [];
 let tasksLeft = 0;
 let tasksCompleted = 0;
+
 let counterHeader = document.getElementById("tasks-left");
 let completedHeader = document.getElementById("completed-tasks");
 let resetButton = document.getElementById("reset");
@@ -14,16 +14,6 @@ let sort = document.getElementById("sort-button");
 let sortState = 0;
 let dataBaseName = "todo-data-base";
 
-if (localStorage.getItem("tasks") === null) {
-  localStorage.setItem("tasks", "[]");
-} else {
-  let tasks = JSON.parse(localStorage.getItem("tasks"));
-  for (let i = 0; i < tasks.length; i++) {
-    let task = tasks[i];
-    addTaskFromStorage(task);
-  }
-}
-
 themeButton.addEventListener("click", (e) => {
   let theme = document.getElementById("theme");
   if (theme.href.includes("style")) {
@@ -31,6 +21,7 @@ themeButton.addEventListener("click", (e) => {
   } else {
     document.getElementById("theme").href = "style.css";
   }
+  load();
 });
 
 undoButton.addEventListener("click", (e) => {
@@ -121,7 +112,7 @@ resetButton.addEventListener("click", (e) => {
 button.addEventListener("click", (e) => {
   let text = document.getElementsByTagName("input")[0].value;
   let priorityInput = document.getElementById("priority-selector").value;
-  addTask(text, calculateTime(new Date()), priorityInput, true);
+  addTask(text, calculateTime(new Date()), priorityInput, false, false);
   saveData();
 });
 
@@ -209,16 +200,6 @@ function removeTask(div, textDiv) {
 //Dump tasks to undo button array.
 function dumpTasks(div) {
   deletedTasks.push(div);
-}
-
-//Function to return a task object. @Not in use@
-function getTaskAsObject(todoText, todoPriority, todoDate, isTicked) {
-  return {
-    text: todoText,
-    priority: todoPriority,
-    date: todoDate,
-    ticked: isTicked,
-  };
 }
 
 //Function to reset all inputs after the user hits "add".
@@ -463,89 +444,6 @@ function addTask(text, date, priority, ticked, add) {
   return bool;
 }
 
-function getTaskAsObject(todoText, todoPriority, todoDate, isTicked) {
-  return {
-    text: text,
-    priority: priority,
-    date: date.now,
-    text: todoText,
-    priority: todoPriority,
-    date: todoDate,
-    ticked: isTicked,
-  };
-}
-
-function saveData() {
-  let container = document.getElementsByClassName("todo-container");
-  let arr = [];
-  for (let i = 0; i < container.length; i++) {
-    let task = container[i];
-    let priorityInner = task.childNodes[1].innerHTML;
-    let dateInner = task.childNodes[2].innerHTML;
-    let taskInner = task.childNodes[3].innerHTML;
-    arr.push({
-      priority: priorityInner,
-      date: dateInner,
-      task: taskInner,
-      ticked: false,
-    });
-  }
-  localStorage.setItem("tasks", JSON.stringify(arr));
-}
-
-//Adding task via json
-function addTaskFromStorage(obj) {
-  taskDiv = document.getElementById("tasks-container");
-  let bool = false;
-  if (obj.text === undefined) {
-    return bool;
-  }
-  //Find importance number
-  //Div priority
-  let priority = obj.priority;
-  let priorityDiv = document.createElement("div");
-  priorityDiv.innerText = JSON.parse(priority);
-  priorityDiv.className = "todo-priority";
-  priorityDiv.classList.add(findPriority(priority));
-  //Div todo-text
-  let text = obj.text;
-  let textDiv = document.createElement("div");
-  textDiv.innerText = text;
-  textDiv.className = "todo-text";
-  if (ticked) {
-    textDiv.classList.add("ticked");
-  }
-  //Creating divs for every data element.
-  let date = obj.date;
-  let dateDiv = document.createElement("div");
-  dateDiv.className = "todo-created-at";
-  dateDiv.innerText = date;
-  //remove button for task
-  let removeButton = document.createElement("button");
-  removeButton.className = "remove-button";
-  removeButton.innerText = "remove";
-  //creating and applying childs to a div which applies to todo container
-  let div = document.createElement("div");
-  div.appendChild(priorityDiv);
-  div.appendChild(textDiv);
-  div.appendChild(dateDiv);
-  getEditTaskButton(div, textDiv);
-  div.appendChild(removeButton);
-  div.className = "todo-container";
-  taskDiv.appendChild(div);
-  textDiv.addEventListener("click", (e) => {
-    changeNumbers(textDiv);
-  });
-  changeTotalLeft(true);
-  removeButton.addEventListener("click", (e) => {
-    if (!containsTicked(textDiv)) {
-      changeTotalDone(true);
-      changeTotalLeft(false);
-    }
-    sort.innerText = "Sort";
-    removeTask(div, textDiv);
-  });
-}
 //Debug menu to check jsonbin.io
 let debugButton = document.getElementById("debug");
 let debugDiv = document.getElementById("debug-div");

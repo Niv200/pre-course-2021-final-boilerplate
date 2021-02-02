@@ -1,3 +1,5 @@
+# ![Debug](./readme-files/addtask.png)
+
 ## What is this?
 
 This is a todo list app for the precourse of scaleup velocity.
@@ -38,6 +40,8 @@ The puppeteer will run 16 tests, checking for the following:
 -Checking if sort button works! (Second state, decreasing)
 -Check if task can be marked
 
+# ![Debug](./readme-files/buttons.png)
+
 ## Explanation for buttons
 
 **Text box**
@@ -49,12 +53,15 @@ This button adds your task into the todo list. be sure to give it some text and 
 **Dark theme**
 Click this to change your task list into dark mode :)
 
+# ![Debug](./readme-files/debugmenu.png)
+
 ## Debug
 
 Since I stayed up all night and almost figured it out but not really, I added a debug section to show that I am able to use json and jsonbin to store and read values and sets.
 To open the debug menu, press the debug button, a following section will be revealed.
 
 **Debug buttons**
+
 -Read local data - Shows you the current data stored in an array, this is stored locally and will reset with every refresh.
 since its in an array, you can look up in the console to see the objects are in the array and their values.
 -Add data - this button simply adds a simple task object into the local data, after hitting this button, hit read local data and you will see the object. for further detail look at your console.
